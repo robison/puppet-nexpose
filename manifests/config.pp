@@ -55,10 +55,12 @@ class nexpose::config (
           "set WebServer/#attribute/maxThreads ${max_server_threads}",
           "set WebServer/#attribute/failureLockout ${bad_login_lockout}",
           ],
-        notify  => Service['nexposeconsole.rc'];
+        notify  => Service['nexposeconsole.rc'],
+        user    => root;
     }
     exec { 'open_webserver_port':
-      command => "/usr/bin/sudo -E iptables -I INPUT 5 -m state --state NEW -p tcp --dport ${port} -j ACCEPT"
+      command => "/sbin/iptables -I INPUT 5 -m state --state NEW -p tcp --dport ${port} -j ACCEPT",
+      user    => root,
     }
   }
 
@@ -71,10 +73,12 @@ class nexpose::config (
         changes => [
           "set NeXposeScanEngine/#attribute/port ${scan_engine_port}",
           ],
-        notify  => Service['nexposeconsole.rc'];
+        notify  => Service['nexposeconsole.rc'],
+        user    => root;
     }
     exec { 'open_sconsole_port':
-      command => "/usr/bin/sudo -E iptables -I INPUT 5 -m state --state NEW -p tcp --dport ${scan_engine_port} -j ACCEPT"
+      command => "/sbin/iptables -I INPUT 5 -m state --state NEW -p tcp --dport ${scan_engine_port} -j ACCEPT",
+      user    => root,
     }
   }
 

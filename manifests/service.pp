@@ -7,17 +7,9 @@ class nexpose::service (
 
   ) inherits nexpose::params {
   
-  if $install_console {
+  if $install_console or $install_console {
     service {
       'nexposeconsole.rc':
-        ensure => running,
-        enable => true,
-      }
-    }
-
-  if $install_engine {
-    service {
-      'nexposeengine.rc':
         ensure => running,
         enable => true,
     }

@@ -46,6 +46,6 @@ class nexpose (
   include 'nexpose::config'
   include 'nexpose::service'
 
-  Class['nexpose::install'] -> Class['nexpose::config'] -> Class['nexpose::service']
+  Class['nexpose::install'] -> Class['nexpose::service'] -> Class['nexpose::config']
 
 }

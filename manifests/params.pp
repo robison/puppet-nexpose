@@ -10,8 +10,8 @@ class nexpose::params {
   $company_name          = 'Rapid7'
   $auth_param_username   = 'nexposeccusername'
   $auth_param_password   = 'nexposeccpassword'
-  $install_typical       = undef
-  $install_engine        = undef
+  $install_typical       = false
+  $install_engine        = false
   $installer_path        = '/tmp/vagrant/modules/nexpose/files/'
   $init_service          = false
   $suppress_reboot       = true
