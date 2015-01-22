@@ -1,7 +1,6 @@
 # Class: nexpose::ldap
 
 class nexpose::ldap (
-
   $ldap_name             = $::nexpose::params::ldap_name,
   $ldap_server           = $::nexpose::params::ldap_server,
   $ldap_port             = $::nexpose::params::ldap_port,
@@ -11,7 +10,6 @@ class nexpose::ldap (
   $ldap_email_map        = $::nexpose::params::ldap_email_map,
   $ldap_login_map        = $::nexpose::params::ldap_login_map,
   $ldap_fullname_map     = $::nexpose::params::ldap_fullname_map,
-
   ) inherits nexpose::params {
   
   if ! $ldap_server {
