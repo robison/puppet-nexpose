@@ -29,7 +29,7 @@ class nexpose::config (
   $virtualhost          = $::nexpose::virtualhost,
   $api_user             = $::nexpose::api_user,
   $api_password         = $::nexpose::api_password,
-  $install_typical      = $::nexpose::install_typical,
+  $install_console      = $::nexpose::install_console,
   $install_engine       = $::nexpose::install_engine,
   
   ) inherits nexpose::params {
@@ -43,7 +43,7 @@ class nexpose::config (
       mode    => '0400';
   }
 
-  if $install_typical {
+  if $install_console {
     augeas {
       '/opt/rapid7/nexpose/nsc/conf/nsc.xml':
         context => '/files/opt/rapid7/nexpose/nsc/conf/nsc.xml/NeXposeSecurityConsole',
