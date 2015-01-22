@@ -38,7 +38,7 @@ class nexpose (
   $init_service         = $::nexpose::params::init_service,
   $suppress_reboot      = $::nexpose::params::suppress_reboot,
 
-) inherits nexpose::params {
+  ) inherits nexpose::params {
   
   include 'nexpose::install'
   include 'nexpose::config'
