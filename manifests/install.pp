@@ -16,8 +16,8 @@ class nexpose::install (
   ) inherits nexpose::params {
   
   exec { 'install_nexpose':
-    command  => "/usr/bin/sudo -E ${installer_path}NeXposeSetup-Linux64.bin -q -overwrite -Vfirstname='${first_name}' -Vlastname='${last_name}' -Vcompany='${company_name}' -Vusername='${auth_param_username}' -Vpassword1='${auth_param_password}' -Vpassword2='${auth_param_password}' -Vsys.component.typical\$Boolean=${install_typical} -Vsys.component.engine\$Boolean=${install_engine} -VinitService\$Boolean=${init_service} -Dinstall4j.suppressUnattendedReboot=${suppress_reboot}",
-    creates  => '/opt/rapid7/nexpose/nsc/nsc.sh'
-  } 
+    command => "/usr/bin/sudo -E ${installer_path}NeXposeSetup-Linux64.bin -q -overwrite -Vfirstname='${first_name}' -Vlastname='${last_name}' -Vcompany='${company_name}' -Vusername='${auth_param_username}' -Vpassword1='${auth_param_password}' -Vpassword2='${auth_param_password}' -Vsys.component.typical\$Boolean=${install_typical} -Vsys.component.engine\$Boolean=${install_engine} -VinitService\$Boolean=${init_service} -Dinstall4j.suppressUnattendedReboot=${suppress_reboot}",
+    creates => '/opt/rapid7/nexpose/nsc/nsc.sh'
+  }
 
 }

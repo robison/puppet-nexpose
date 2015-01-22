@@ -18,6 +18,7 @@ class nexpose::params {
 
   #web server config
   $port                  = 3780
+  $scan_engine_port      = 40814
   $server_root           = '.'
   $doc_root              = 'htroot'
   $min_server_threads    = 10

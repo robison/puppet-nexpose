@@ -1,8 +1,8 @@
 # Class: nexpose::config
 
 class nexpose::config (
-
   $port                 = $::nexpose::port,
+  $scan_engine_port     = $::nexpose::scan_engine_port,
   $server_root          = $::nexpose::server_root,
   $doc_root             = $::nexpose::doc_root,
   $min_server_threads   = $::nexpose::min_server_threads,
@@ -30,7 +30,6 @@ class nexpose::config (
   $api_password         = $::nexpose::api_password,
   $install_typical      = $::nexpose::install_typical,
   $install_engine       = $::nexpose::install_engine,
-  
   ) inherits nexpose::params {
 
   file {
@@ -42,7 +41,7 @@ class nexpose::config (
       mode    => '0400';
   }
 
-  if $install_typical == True {
+  if $install_typical {
     augeas {
       '/opt/rapid7/nexpose/nsc/conf/nsc.xml':
         context => '/files/opt/rapid7/nexpose/nsc/conf/nsc.xml/NeXposeSecurityConsole',
@@ -56,11 +55,26 @@ class nexpose::config (
           ],
         notify  => Service['nexposeconsole.rc'];
     }
+    exec { 'open_webserver_port':
+      command => "/usr/bin/sudo -E iptables -I INPUT 5 -m state --state NEW -p tcp --dport ${port} -j ACCEPT"
+    }
   }
 
-  exec { 'open_server_port':
-    command => "/usr/bin/sudo -E iptables -I INPUT 5 -m state --state NEW -p tcp --dport ${port} -j ACCEPT"
+  if $install_engine {
+    augeas {
+      '/opt/rapid7/nexpose/nse/conf/nse.xml':
+        context => '/files/opt/rapid7/nexpose/nse/conf/nse.xml/NeXposeScanEngine',
+        incl    => '/opt/rapid7/nexpose/nse/conf/nse.xml',
+        lens    => 'Xml.lns',
+        changes => [
+          "set NeXposeScanEngine/#attribute/port ${scan_engine_port}",
+          ],
+        notify  => Service['nexposeconsole.rc'];
     }
+    exec { 'open_sconsole_port':
+      command => "/usr/bin/sudo -E iptables -I INPUT 5 -m state --state NEW -p tcp --dport ${scan_engine_port} -j ACCEPT"
+    }
+  }
 
   user {'nexpose':
     password => '!';
