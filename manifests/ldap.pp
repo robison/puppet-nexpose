@@ -1,31 +1,39 @@
 # Class: nexpose::ldap
+
 class nexpose::ldap (
+
   $ldap_name             = $::nexpose::params::ldap_name,
   $ldap_server           = $::nexpose::params::ldap_server,
-  $ldap_port        = $::nexpose::params::ldap_port,
+  $ldap_port             = $::nexpose::params::ldap_port,
   $ldap_ssl              = $::nexpose::params::ldap_ssl,
   $ldap_base             = $::nexpose::params::ldap_base,
   $ldap_follow_referrals = $::nexpose::params::ldap_follow_referrals,
   $ldap_email_map        = $::nexpose::params::ldap_email_map,
   $ldap_login_map        = $::nexpose::params::ldap_login_map,
   $ldap_fullname_map     = $::nexpose::params::ldap_fullname_map,
-) inherits nexpose::params {
+
+  ) inherits nexpose::params {
+  
   if ! $ldap_server {
     fail('nexpose::ldap you need to set ldap_server')
   }
+
   if ! $ldap_base {
     fail('nexpose::ldap you need to set ldap_base')
   }
+
   if $ldap_ssl {
     $real_ldap_ssl = 1
   } else {
     $real_ldap_ssl = 0
   }
+
   if $ldap_follow_referrals {
     $real_ldap_follow_referrals = 1
   } else {
     $real_ldap_follow_referrals = 0
   }
+
   augeas {
     '/opt/rapid7/nexpose/nsc/conf/nsc.xml_ldap':
       context => '/files/opt/rapid7/nexpose/nsc/conf/nsc.xml/NeXposeSecurityConsole',
@@ -48,4 +56,5 @@ class nexpose::ldap (
       ],
       notify  => Service['nexposeconsole.rc'];
   }
+
 }

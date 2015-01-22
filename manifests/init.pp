@@ -1,40 +1,5 @@
-# == Class: nexpose
-#
-# Full description of class nexpose here.
-#
-# === Parameters
-#
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
-#
-# === Examples
-#
-#  class { nexpose:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
-#  }
-#
-# === Authors
-#
-# Author Name <author@domain.com>
-#
-# === Copyright
-#
-# Copyright 2014 Your name here, unless otherwise noted.
-#
+# Class: nexpose
+
 class nexpose (
   $port                 = $::nexpose::params::port,
   $server_root          = $::nexpose::params::server_root,
@@ -62,52 +27,22 @@ class nexpose (
   $virtualhost          = $::nexpose::params::virtualhost,
   $api_user             = $::nexpose::params::api_user,
   $api_password         = $::nexpose::params::api_password,
+  $linuxinstaller       = $::nexpose::params::linuxinstaller,
+  $windowsinstaller     = $::nexpose::params::windowsinstaller,
+  $first_name           = $::nexpose::params::first_name,
+  $last_name            = $::nexpose::params::last_name,
+  $company_name         = $::nexpose::params::company_name,
+  $install_typical      = $::nexpose::params::install_typical,
+  $install_engine       = $::nexpose::params::install_engine,
+  $init_service         = $::nexpose::params::init_service,
+  $suppress_reboot      = $::nexpose::params::suppress_reboot,
+
 ) inherits nexpose::params {
-  class { 'ruby':
-    version            => '1.9.3',
-    set_system_default => true,
-  }
-  class {'ruby::dev': }
-  package { 'nexpose':
-    ensure   =>  'installed',
-    provider =>  'gem',
-  }
-  file {
-    '/opt/rapid7/nexpose/nsc/conf/httpd.xml':
-      notify  => Service['nexposeconsole.rc'],
-      content => template('nexpose/httpd.xml.erb');
-    '/opt/rapid7/nexpose/nsc/conf/api.conf':
-      content => "user=${api_user}\npassword=${api_password}\nserver=${virtualhost}\nport=${port}\n",
-      mode    => '0400';
-  }
-  augeas {
-    '/opt/rapid7/nexpose/nsc/conf/nsc.xml':
-      context => '/files/opt/rapid7/nexpose/nsc/conf/nsc.xml/NeXposeSecurityConsole',
-      incl    => '/opt/rapid7/nexpose/nsc/conf/nsc.xml',
-      lens    => 'Xml.lns',
-      changes => [
-        "set WebServer/#attribute/port ${port}",
-        "set WebServer/#attribute/minThreads ${min_server_threads}",
-        "set WebServer/#attribute/maxThreads ${max_server_threads}",
-        "set WebServer/#attribute/failureLockout ${bad_login_lockout}",
-        ],
-      notify  => Service['nexposeconsole.rc'];
-  }
-  service {
-    'nexposeconsole.rc':
-      ensure  => running,
-      enable  => true,
-      require => File['/opt/rapid7/nexpose/nsc/conf/httpd.xml'];
-  }
-  user {'nexpose':
-    password => '!';
-  }
-  nexpose_user {
-    $api_user:
-      ensure      => present,
-      enabled     => true,
-      password    => $api_password,
-      full_name   => 'Puppet API User',
-      role        => 'global-admin';
-  }
+  
+  include 'nexpose::install'
+  include 'nexpose::config'
+  include 'nexpose::service'
+  
+  Class['nexpose::install'] -> Class['nexpose::config'] -> Class['nexpose::service']
+
 }
