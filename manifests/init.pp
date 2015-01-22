@@ -34,7 +34,7 @@ class nexpose (
   $first_name           = $::nexpose::params::first_name,
   $last_name            = $::nexpose::params::last_name,
   $company_name         = $::nexpose::params::company_name,
-  $install_typical      = $::nexpose::params::install_typical,
+  $install_console      = $::nexpose::params::install_console,
   $install_engine       = $::nexpose::params::install_engine,
   $installer_path       = $::nexpose::params::installer_path,
   $init_service         = $::nexpose::params::init_service,
