@@ -34,6 +34,7 @@ class nexpose (
   $company_name         = $::nexpose::params::company_name,
   $install_typical      = $::nexpose::params::install_typical,
   $install_engine       = $::nexpose::params::install_engine,
+  $installer_path       = $::nexpose::params::installer_path,
   $init_service         = $::nexpose::params::init_service,
   $suppress_reboot      = $::nexpose::params::suppress_reboot,
 
@@ -42,7 +43,7 @@ class nexpose (
   include 'nexpose::install'
   include 'nexpose::config'
   include 'nexpose::service'
-  
+
   Class['nexpose::install'] -> Class['nexpose::config'] -> Class['nexpose::service']
 
 }

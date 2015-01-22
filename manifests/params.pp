@@ -12,6 +12,7 @@ class nexpose::params {
   $auth_param_password   = 'nexposeccpassword'
   $install_typical       = false
   $install_engine        = true
+  $installer_path        = '/tmp/vagrant/modules/nexpose/files/'
   $init_service          = true
   $suppress_reboot       = true
 
@@ -53,5 +54,5 @@ class nexpose::params {
   #api
   $api_user              = 'nxadmin'
   $api_password          = 'nxpassword'
-  
+
 }
