@@ -1,6 +1,7 @@
 # Class: nexpose::config
 
 class nexpose::config (
+
   $port                 = $::nexpose::port,
   $scan_engine_port     = $::nexpose::scan_engine_port,
   $server_root          = $::nexpose::server_root,
@@ -30,6 +31,7 @@ class nexpose::config (
   $api_password         = $::nexpose::api_password,
   $install_typical      = $::nexpose::install_typical,
   $install_engine       = $::nexpose::install_engine,
+  
   ) inherits nexpose::params {
 
   file {

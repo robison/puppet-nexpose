@@ -1,6 +1,7 @@
 # Class: nexpose
 
 class nexpose (
+
   $port                 = $::nexpose::params::port,
   $scan_engine_port     = $::nexpose::params::scan_engine_port,
   $server_root          = $::nexpose::params::server_root,
@@ -38,6 +39,7 @@ class nexpose (
   $installer_path       = $::nexpose::params::installer_path,
   $init_service         = $::nexpose::params::init_service,
   $suppress_reboot      = $::nexpose::params::suppress_reboot,
+  
   ) inherits nexpose::params {
   
   include 'nexpose::install'

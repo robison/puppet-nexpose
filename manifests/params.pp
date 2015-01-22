@@ -11,9 +11,9 @@ class nexpose::params {
   $auth_param_username   = 'nexposeccusername'
   $auth_param_password   = 'nexposeccpassword'
   $install_typical       = false
-  $install_engine        = true
+  $install_engine        = false
   $installer_path        = '/tmp/vagrant/modules/nexpose/files/'
-  $init_service          = true
+  $init_service          = false
   $suppress_reboot       = true
 
   #web server config
