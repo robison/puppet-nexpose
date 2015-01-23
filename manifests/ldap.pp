@@ -1,3 +1,4 @@
+# vim:ft=ruby
 # Class: nexpose::ldap
 
 class nexpose::ldap (

@@ -1,16 +1,27 @@
 {
-  "name": "icann-nexpose",
-  "version": "0.1.0",
-  "author": "b4ldr",
-  "summary": "Install and configure rapid7 zabbix",
-  "license": "BSD 2 Clause",
-  "source": "",
-  "project_page": null,
-  "issues_url": null,
+  "name": "robison-nexpose",
+  "version": "0.0.1",
+  "author": "robison",
+  "summary": "Deploy & manage Rapid7 NeXpose Security Scanning Console & Engine",
+  "license": "Apache 2.0",
+  "source": "https://github.com/robison/puppet-nexpose",
+  "project_page": "https://forge.puppetlabs.com/robison/nexpose",
+  "issues_url": "https://github.com/robison/puppet-nexpose/issues",
+  "tags": ["rapid7", "nexpose"],
+    "operatingsystem_support": [
+      {
+      "operatingsystem":"CentOS",
+      "operatingsystemrelease":[ "5", "6", "7" ]
+      },
+      {
+      "operatingsystem":"RedHat",
+      "operatingsystemrelease":[ "5", "6", "7" ]
+      }
+  ],
   "dependencies": [
     {
-      "name": "puppetlabs-stdlib",
-      "version_range": ">= 1.0.0"
+    "name": "puppetlabs-stdlib",
+     "version_range": ">= 1.0.0"
     }
   ]
 }
