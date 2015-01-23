@@ -43,40 +43,30 @@ class nexpose::config (
       mode    => '0400';
   }
 
+  augeas {
+    '/opt/rapid7/nexpose/nsc/conf/nsc.xml':
+      context => '/files/opt/rapid7/nexpose/nsc/conf/nsc.xml/NeXposeSecurityConsole',
+      incl    => '/opt/rapid7/nexpose/nsc/conf/nsc.xml',
+      lens    => 'Xml.lns',
+      changes => [
+        "set WebServer/#attribute/port ${port}",
+        "set WebServer/#attribute/minThreads ${min_server_threads}",
+        "set WebServer/#attribute/maxThreads ${max_server_threads}",
+        "set WebServer/#attribute/failureLockout ${bad_login_lockout}",
+        ],
+      onlyif  => 'match /files/opt/rapid7/nexpose/nsc/conf/nsc.xml size > 0',
+      notify  => Service['nexposeconsole.rc'];
+  }
+
   if $install_console {
-    augeas {
-      '/opt/rapid7/nexpose/nsc/conf/nsc.xml':
-        context => '/files/opt/rapid7/nexpose/nsc/conf/nsc.xml/NeXposeSecurityConsole',
-        incl    => '/opt/rapid7/nexpose/nsc/conf/nsc.xml',
-        lens    => 'Xml.lns',
-        changes => [
-          "set WebServer/#attribute/port ${port}",
-          "set WebServer/#attribute/minThreads ${min_server_threads}",
-          "set WebServer/#attribute/maxThreads ${max_server_threads}",
-          "set WebServer/#attribute/failureLockout ${bad_login_lockout}",
-          ],
-        notify  => Service['nexposeconsole.rc'],
-        user    => root;
-    }
-    exec { 'open_webserver_port':
+    exec { 'open_secconsole_port':
       command => "/sbin/iptables -I INPUT 5 -m state --state NEW -p tcp --dport ${port} -j ACCEPT",
       user    => root,
     }
   }
 
   if $install_engine {
-    augeas {
-      '/opt/rapid7/nexpose/nse/conf/nse.xml':
-        context => '/files/opt/rapid7/nexpose/nse/conf/nse.xml/NeXposeScanEngine',
-        incl    => '/opt/rapid7/nexpose/nse/conf/nse.xml',
-        lens    => 'Xml.lns',
-        changes => [
-          "set NeXposeScanEngine/#attribute/port ${scan_engine_port}",
-          ],
-        notify  => Service['nexposeconsole.rc'],
-        user    => root;
-    }
-    exec { 'open_sconsole_port':
+    exec { 'open_scanengine_port':
       command => "/sbin/iptables -I INPUT 5 -m state --state NEW -p tcp --dport ${scan_engine_port} -j ACCEPT",
       user    => root,
     }
